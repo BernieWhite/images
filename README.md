@@ -12,7 +12,8 @@ If you have any problems please check our GitHub [issues](https://github.com/Ber
 
 Image name | Description
 ---------- | -----------
-[psrule][ps-rule-info] | Validate objects using PowerShell rules
+[ps-rule][ps-rule-info] | Validate objects using PowerShell rules.
+[ps-rule-azure][ps-rule-azure-info] | A suite of rules to validate Azure resources using PSRule.
 
 ### Platforms
 
@@ -38,3 +39,4 @@ Images in this repository use the following labels:
 This project is [licensed under the MIT License](LICENSE).
 
 [ps-rule-info]: docker/ps-rule/README.md
+[ps-rule-azure-info]: docker/ps-rule-azure/README.md

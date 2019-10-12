@@ -54,9 +54,13 @@ stages:
         command: login
         containerRegistry: 'Packages-PSRule.Rules'
 
-    # Build module
-    - powershell: Invoke-Build BuildImage -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
-      displayName: 'Build container image'
+    # Build ps-rule
+    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry) -Image ps-rule -Module PSRule
+      displayName: 'Build ps-rule'
+
+    # Build ps-rule-azure
+    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry) -Image ps-rule-azure -Module PSRule.Rules.Azure
+      displayName: 'Build ps-rule-azure'
 
     - task: Docker@2
       displayName: Docker logout

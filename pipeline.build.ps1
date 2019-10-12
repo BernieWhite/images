@@ -4,6 +4,12 @@ param (
     [Parameter(Mandatory = $False)]
     [String]$Build = '0.0.1',
 
+    [Parameter(Mandatory = $True)]
+    [String]$Image,
+
+    [Parameter(Mandatory = $True)]
+    [String]$Module,
+
     [Parameter(Mandatory = $False)]
     [String]$Configuration = 'Debug',
 
@@ -59,16 +65,18 @@ task NuGet {
     }
 }
 
-task PSRuleStable NuGet, {
-    Install-Module -Name PSRule -Repository PSGallery -MinimumVersion 0.10.0 -Scope CurrentUser -Force;
+# Synopsis: Get the latest stable version
+task GetLatest NuGet, {
+    Install-Module -Name $Module -Repository PSGallery -MinimumVersion 0.10.0 -Scope CurrentUser -Force;
 }
 
-task PSRuleLatest NuGet, {
-    Install-Module -Name PSRule -Repository PSGallery -MinimumVersion 0.10.0 -AllowPrerelease -Scope CurrentUser -Force;
+# Synopsis: Get the latest pre-release version
+task GetPrerelease NuGet, {
+    Install-Module -Name $Module -Repository PSGallery -MinimumVersion 0.10.0 -AllowPrerelease -Scope CurrentUser -Force;
 }
 
-task BuildImage PSRuleStable, PSRuleLatest, {
-    $versions = (Get-InstalledModule -Name PSRule -AllVersions -ErrorAction Ignore);
+task BuildImage GetLatest, {
+    $versions = (Get-InstalledModule -Name $Module -AllVersions -ErrorAction Ignore);
     $stableVersion = @($versions | Where-Object -FilterScript {
         $_.Version -notlike "*-*"
     })[0].Version;
@@ -77,21 +85,17 @@ task BuildImage PSRuleStable, PSRuleLatest, {
     # })[0].Version;
 
     exec {
-        docker build -f docker/ps-rule/stable/$baseImage/docker/Dockerfile -t ps-rule:stable-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-arg MODULE_VERSION=$stableVersion .
-        docker tag ps-rule:stable-$baseimage $containerRegistry/ps-rule:latest-$baseimage
-        docker tag ps-rule:stable-$baseimage $containerRegistry/ps-rule:v$major-$baseimage
-        docker tag ps-rule:stable-$baseimage $containerRegistry/ps-rule:v$major.$minor-$baseimage
+        docker build -f docker/$Image/stable/$baseImage/docker/Dockerfile -t $($Image):stable-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-arg MODULE_VERSION=$stableVersion .
+        docker tag $($Image):stable-$baseimage $containerRegistry/$($Image):latest-$baseimage
+        docker tag $($Image):stable-$baseimage $containerRegistry/$($Image):v$major-$baseimage
+        docker tag $($Image):stable-$baseimage $containerRegistry/$($Image):v$major.$minor-$baseimage
     }
 
     exec {
-        docker push $containerRegistry/ps-rule:latest-$baseImage
-        docker push $containerRegistry/ps-rule:v$major-$baseimage
-        docker push $containerRegistry/ps-rule:v$major.$minor-$baseimage
+        docker push $containerRegistry/$($Image):latest-$baseImage
+        docker push $containerRegistry/$($Image):v$major-$baseimage
+        docker push $containerRegistry/$($Image):v$major.$minor-$baseimage
     }
 }
 
-task . Build
-
-task Build BuildImage, {
-
-}
+task . BuildImage
