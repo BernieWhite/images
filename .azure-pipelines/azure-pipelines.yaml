@@ -52,7 +52,7 @@ stages:
       displayName: Docker login
       inputs:
         command: login
-        containerRegistry: 'Packages-PSRule.Rules'
+        containerRegistry: 'Packages-images'
 
     # Build ps-rule
     - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry) -Image ps-rule -Module PSRule
@@ -66,5 +66,5 @@ stages:
       displayName: Docker logout
       inputs:
         command: logout
-        containerRegistry: 'Packages-PSRule.Rules'
+        containerRegistry: 'Packages-images'
       condition: always()
