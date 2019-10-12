@@ -10,10 +10,10 @@ If you have any problems please check our GitHub [issues](https://github.com/Ber
 
 ## Images
 
-Image name | Description
----------- | -----------
-[ps-rule][ps-rule-info] | Validate objects using PowerShell rules.
-[ps-rule-azure][ps-rule-azure-info] | A suite of rules to validate Azure resources using PSRule.
+Image name | Description | Download / info
+---------- | ----------- | ---------------
+ps-rule | Validate objects using PowerShell rules. | [tags][ps-rule-tags] / [info][ps-rule-info]
+ps-rule-azure | A suite of rules to validate Azure resources using PSRule. | [tags][ps-rule-azure-tags] / [info][ps-rule-azure-info]
 
 ### Platforms
 
@@ -39,4 +39,6 @@ Images in this repository use the following labels:
 This project is [licensed under the MIT License](LICENSE).
 
 [ps-rule-info]: docker/ps-rule/README.md
+[ps-rule-tags]: https://github.com/BernieWhite/images/packages/35462/versions
 [ps-rule-azure-info]: docker/ps-rule-azure/README.md
+[ps-rule-azure-tags]: https://github.com/BernieWhite/images/packages/35463/versions
