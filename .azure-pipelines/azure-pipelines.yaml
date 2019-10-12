@@ -55,11 +55,11 @@ stages:
         containerRegistry: 'Packages-images'
 
     # Build ps-rule
-    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry) -Image ps-rule -Module PSRule
+    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Image ps-rule -Module PSRule
       displayName: 'Build ps-rule'
 
     # Build ps-rule-azure
-    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry) -Image ps-rule-azure -Module PSRule.Rules.Azure
+    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Image ps-rule-azure -Module PSRule.Rules.Azure
       displayName: 'Build ps-rule-azure'
 
     - task: Docker@2
