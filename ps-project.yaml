@@ -1,0 +1,20 @@
+
+info:
+  name: images
+  description: |
+    A repository for public Docker images.
+  url: https://berniewhite.github.io/images/
+
+repository:
+  type: git
+  url: https://github.com/BernieWhite/images.git
+
+bugs:
+  url: https://github.com/BernieWhite/images/issues
+
+tasks:
+  clear:
+    steps:
+      - gitPrune:
+          name: origin
+          removeGone: true
