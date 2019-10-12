@@ -1,0 +1,66 @@
+# Azure DevOps
+# CI pipeline for images
+
+variables:
+  version: '0.1.0'
+  buildConfiguration: 'Release'
+  registry: docker.pkg.github.com/berniewhite/images
+
+# Use build number format, i.e. 0.1.0-B1811001
+name: $(version)-B$(date:yyMM)$(rev:rrr)
+
+trigger: none
+  # branches:
+  #   include:
+  #   - 'master'
+
+pr: none
+  # branches:
+  #   include:
+  #   - 'master'
+
+stages:
+
+# Build pipeline
+- stage: Build
+  displayName: Build
+  jobs:
+  - job:
+    strategy:
+      matrix:
+        Alpine:
+          displayName: 'Alpine'
+          baseImage: 'alpine'
+          imageName: 'ubuntu-16.04'
+        Ubuntu:
+          displayName: 'Ubuntu'
+          baseImage: 'ubuntu'
+          imageName: 'ubuntu-16.04'
+        # Windows:
+        #   displayName: 'Windows'
+        #   baseImage: windowsservercore
+        #   imageName: 'windows-2019'
+    pool:
+      vmImage: $(imageName)
+    displayName: 'Docker'
+    steps:
+    # Install pipeline dependencies
+    - powershell: ./.azure-pipelines/pipeline-deps.ps1
+      displayName: 'Install dependencies'
+
+    - task: Docker@2
+      displayName: Docker login
+      inputs:
+        command: login
+        containerRegistry: 'Packages-PSRule.Rules'
+
+    # Build module
+    - powershell: Invoke-Build BuildImage -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
+      displayName: 'Build container image'
+
+    - task: Docker@2
+      displayName: Docker logout
+      inputs:
+        command: logout
+        containerRegistry: 'Packages-PSRule.Rules'
+      condition: always()
