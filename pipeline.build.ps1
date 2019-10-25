@@ -74,6 +74,10 @@ task BuildImage GetLatest, {
     }
 
     exec {
+        docker images --digests $Image
+    }
+
+    exec {
         docker tag $buildTag $targetLatest
         docker tag $buildTag $targetMajor
         docker tag $buildTag $targetMinor
