@@ -7,7 +7,7 @@
 ARG fromTag=windowsservercore-1809
 ARG imageRepo=mcr.microsoft.com/powershell
 ARG VCS_REF="none"
-ARG MODULE_VERSION=0.4.0
+ARG MODULE_VERSION=0.5.0
 
 # Use PowerShell image
 FROM ${imageRepo}:${fromTag}

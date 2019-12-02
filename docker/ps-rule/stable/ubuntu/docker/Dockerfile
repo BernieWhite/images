@@ -6,7 +6,7 @@
 ARG fromTag=ubuntu-18.04
 ARG imageRepo=mcr.microsoft.com/powershell
 ARG VCS_REF="none"
-ARG MODULE_VERSION=0.10.0
+ARG MODULE_VERSION=0.11.0
 
 # Use PowerShell image
 FROM ${imageRepo}:${fromTag}
